@@ -3,7 +3,8 @@ import React, { useState, useReducer } from "react";
 const ACTIONS = {
   INCREMENT: "increment",
   DECREMENT: "decrement",
-  RESET: "reset"
+  RESET: "reset",
+  ADD_TODO: "add-todo"
 };
 
 function reducer(state, action) {
@@ -21,9 +22,24 @@ function reducer(state, action) {
   }
 }
 
+function todoreducer(todostate, action) {
+  switch (action.type) {
+    case ACTIONS.ADD_TODO:
+      return [...todostate, newTodo(action.payload.name)];
+    default:
+      return todostate;
+  }
+}
+
+function newTodo(name) {
+  return { id: Date.now(), name: name, complete: false };
+}
+
 export default function App() {
   const [state, dispatch] = useReducer(reducer, { count: 0 });
-  //const [count, setCount] = useState(0);
+  const [todostate, tododispatch] = useReducer(todoreducer, []);
+
+  const [name, setName] = useState("");
 
   function increment() {
     console.log("increment");
@@ -38,6 +54,17 @@ export default function App() {
     console.log("resetCount");
     dispatch({ type: ACTIONS.RESET });
   }
+  function handleSubmit(e) {
+    console.log("handleSubmit");
+    e.preventDefault();
+    tododispatch({
+      type: ACTIONS.ADD_TODO,
+      payload: { name: name }
+    });
+    setName("");
+  }
+
+  console.log(todostate);
 
   return (
     <>
@@ -46,6 +73,17 @@ export default function App() {
         <button onClick={increment}>+</button>
         <button onClick={decrement}>-</button>
         <button onClick={resetCount}>reset</button>
+      </div>
+      <div>
+        <form onSubmit={handleSubmit}>
+          todo:
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <div>{name}</div>
+        </form>
       </div>
     </>
   );
