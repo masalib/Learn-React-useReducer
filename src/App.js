@@ -1,11 +1,12 @@
 import React, { useState, useReducer } from "react";
 import Todo from "./Todo";
 
-const ACTIONS = {
+export const ACTIONS = {
   INCREMENT: "increment",
   DECREMENT: "decrement",
   RESET: "reset",
-  ADD_TODO: "add-todo"
+  ADD_TODO: "add-todo",
+  TOGGLE_TODO: "toggle-todo"
 };
 
 function reducer(state, action) {
@@ -24,9 +25,18 @@ function reducer(state, action) {
 }
 
 function todoreducer(todostate, action) {
+  console.log("todoreducer");
+  console.log(`action:${action.type}`);
   switch (action.type) {
     case ACTIONS.ADD_TODO:
       return [...todostate, newTodo(action.payload.name)];
+    case ACTIONS.TOGGLE_TODO:
+      return todostate.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return { ...todo, complete: !todo.complete };
+        }
+        return todo;
+      });
     default:
       return todostate;
   }
@@ -66,9 +76,9 @@ export default function App() {
   }
 
   //console.log(todostate);
-  todostate.map((todo) => {
-    console.log(todo);
-  });
+  //todostate.map((todo) => {
+  //  console.log(todo);
+  //});
 
   return (
     <>
@@ -91,7 +101,9 @@ export default function App() {
         <div>todo list:</div>
         <div>
           {todostate.map((todo) => {
-            return <Todo key={todo.id} todo={todo} />;
+            return (
+              <Todo key={todo.id} todo={todo} tododispatch={tododispatch} />
+            );
           })}
         </div>
       </div>
