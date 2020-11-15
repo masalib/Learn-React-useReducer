@@ -1,4 +1,5 @@
 import React, { useState, useReducer } from "react";
+import Todo from "./Todo";
 
 const ACTIONS = {
   INCREMENT: "increment",
@@ -64,7 +65,10 @@ export default function App() {
     setName("");
   }
 
-  console.log(todostate);
+  //console.log(todostate);
+  todostate.map((todo) => {
+    console.log(todo);
+  });
 
   return (
     <>
@@ -84,6 +88,12 @@ export default function App() {
           />
           <div>{name}</div>
         </form>
+        <div>todo list:</div>
+        <div>
+          {todostate.map((todo) => {
+            return <Todo key={todo.id} todo={todo} />;
+          })}
+        </div>
       </div>
     </>
   );
