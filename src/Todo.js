@@ -3,7 +3,12 @@ import { ACTIONS } from "./App";
 
 const Todo = ({ todo, tododispatch }) => {
   function deletedata() {
-    console.log("delete");
+    console.log(todo.id);
+    console.log("deletedata");
+    tododispatch({
+      type: ACTIONS.DELETE_TODO,
+      payload: { id: todo.id }
+    });
   }
   function toggle() {
     console.log(todo.id);

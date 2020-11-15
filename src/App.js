@@ -6,7 +6,8 @@ export const ACTIONS = {
   DECREMENT: "decrement",
   RESET: "reset",
   ADD_TODO: "add-todo",
-  TOGGLE_TODO: "toggle-todo"
+  TOGGLE_TODO: "toggle-todo",
+  DELETE_TODO: "delete-todo"
 };
 
 function reducer(state, action) {
@@ -37,6 +38,9 @@ function todoreducer(todostate, action) {
         }
         return todo;
       });
+    case ACTIONS.DELETE_TODO:
+      return todostate.filter((todo) => todo.id !== action.payload.id);
+
     default:
       return todostate;
   }
