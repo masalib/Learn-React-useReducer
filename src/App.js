@@ -2,7 +2,17 @@ import React, { useState, useReducer } from "react";
 
 function reducer(state, action) {
   console.log("reducer function");
-  return { count: state.count + 1 };
+  console.log(`action:${action.type}`);
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    case "reset":
+      return { count: 0 };
+    default:
+      return state;
+  }
 }
 
 export default function App() {
@@ -11,14 +21,16 @@ export default function App() {
 
   function increment() {
     console.log("increment");
-    dispatch();
+    dispatch({ type: "increment" });
   }
   function decrement() {
     console.log("decrement");
+    dispatch({ type: "decrement" });
   }
 
   function resetCount() {
     console.log("resetCount");
+    dispatch({ type: "reset" });
   }
 
   return (
